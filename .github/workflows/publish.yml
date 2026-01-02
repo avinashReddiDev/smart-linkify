@@ -22,6 +22,7 @@ jobs:
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org
+          scope: '@smart-linkify'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -37,8 +38,11 @@ jobs:
       - name: Publish core package
         run: npm publish --provenance --access public
         working-directory: packages/core
-        
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
       - name: Publish react package
         run: npm publish --provenance --access public
         working-directory: packages/react
-        
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
