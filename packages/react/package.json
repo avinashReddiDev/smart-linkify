@@ -1,0 +1,63 @@
+{
+  "name": "@smart-linkify/react",
+  "version": "1.0.0",
+  "description": "React components for smart URL linkification",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup src/index.tsx --format esm,cjs --dts --clean",
+    "dev": "tsup src/index.tsx --format esm,cjs --dts --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "peerDependencies": {
+    "react": ">=17"
+  },
+  "dependencies": {
+    "@smart-linkify/core": "^1.0.0"
+  },
+  "keywords": [
+    "react",
+    "linkify",
+    "url",
+    "autolink",
+    "links",
+    "component",
+    "typescript"
+  ],
+  "author": "Avinash Reddi <avinash.reddi@example.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/avinashReddiDev/smart-linkify.git",
+    "directory": "packages/react"
+  },
+  "bugs": {
+    "url": "https://github.com/avinashReddiDev/smart-linkify/issues"
+  },
+  "homepage": "https://github.com/avinashReddiDev/smart-linkify#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.7",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "name": "smart-linkify",
+  "private": true,
+  "version": "1.0.0",
+  "description": "A modern TypeScript library for automatically converting URLs in text to clickable links",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "build:core": "npm run build -w @smart-linkify/core",
+    "build:react": "npm run build -w @smart-linkify/react",
+    "clean": "rm -rf packages/*/dist",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "linkify",
+    "url",
+    "autolink",
+    "links",
+    "anchor",
+    "typescript",
+    "react",
+    "text-processing"
+  ],
+  "author": "Avinash Reddi <avinash.reddi@example.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/avinashReddiDev/smart-linkify.git"
+  },
+  "bugs": {
+    "url": "https://github.com/avinashReddiDev/smart-linkify/issues"
+  },
+  "homepage": "https://github.com/avinashReddiDev/smart-linkify#readme",
+  "devDependencies": {
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=7.0.0"
+  }
+}

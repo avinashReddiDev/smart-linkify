@@ -1,0 +1,52 @@
+{
+  "name": "@smart-linkify/core",
+  "version": "1.0.0",
+  "description": "Core library for converting URLs in text to clickable links",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --clean",
+    "dev": "tsup src/index.ts --format esm,cjs --dts --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "linkify",
+    "url",
+    "autolink",
+    "links",
+    "anchor",
+    "typescript",
+    "text-processing"
+  ],
+  "author": "Avinash Reddi <avinash.reddi@example.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/avinashReddiDev/smart-linkify.git",
+    "directory": "packages/core"
+  },
+  "bugs": {
+    "url": "https://github.com/avinashReddiDev/smart-linkify/issues"
+  },
+  "homepage": "https://github.com/avinashReddiDev/smart-linkify#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

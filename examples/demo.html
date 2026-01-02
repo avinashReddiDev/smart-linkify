@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Linkify Demo</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    
+    h1 {
+      color: #333;
+      border-bottom: 3px solid #1da1f2;
+      padding-bottom: 10px;
+    }
+    
+    h2 {
+      color: #555;
+      margin-top: 30px;
+    }
+    
+    .example {
+      background: #f5f5f5;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      border-left: 4px solid #1da1f2;
+    }
+    
+    .input {
+      background: white;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+    }
+    
+    .output {
+      background: white;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+      min-height: 40px;
+    }
+    
+    .label {
+      font-weight: bold;
+      color: #666;
+      margin-bottom: 5px;
+    }
+    
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 14px;
+      resize: vertical;
+    }
+    
+    button {
+      background: #1da1f2;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      margin: 5px;
+    }
+    
+    button:hover {
+      background: #1a91da;
+    }
+    
+    .preset-buttons {
+      margin: 15px 0;
+    }
+    
+    code {
+      background: #272822;
+      color: #f8f8f2;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Monaco', 'Courier New', monospace;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔗 Smart Linkify Demo</h1>
+  
+  <div class="example">
+    <h2>Interactive Demo</h2>
+    <div class="label">Enter text with URLs:</div>
+    <textarea id="inputText" rows="4" placeholder="Try: Check out https://github.com and www.google.com!">Check out https://github.com and www.google.com!</textarea>
+    
+    <div class="preset-buttons">
+      <button onclick="applyBasic()">Basic</button>
+      <button onclick="applyPreset('minimal')">Minimal</button>
+      <button onclick="applyPreset('social')">Social</button>
+      <button onclick="applyPreset('professional')">Professional</button>
+      <button onclick="applyPreset('compact')">Compact</button>
+    </div>
+    
+    <div class="label">Output:</div>
+    <div id="output" class="output"></div>
+  </div>
+
+  <div class="example">
+    <h2>Example 1: Basic Usage</h2>
+    <div class="input">Visit https://example.com for more info</div>
+    <div class="output" id="example1"></div>
+  </div>
+
+  <div class="example">
+    <h2>Example 2: Multiple URLs</h2>
+    <div class="input">Check out github.com, www.npmjs.com, and https://typescript.org</div>
+    <div class="output" id="example2"></div>
+  </div>
+
+  <div class="example">
+    <h2>Example 3: Custom Styling</h2>
+    <div class="input">Documentation at docs.example.com</div>
+    <div class="output" id="example3"></div>
+  </div>
+
+  <div class="example">
+    <h2>Example 4: Truncated URLs</h2>
+    <div class="input">https://example.com/very/long/path/to/some/resource/file.html</div>
+    <div class="output" id="example4"></div>
+  </div>
+
+  <script type="module">
+    import { linkify, presets } from 'https://cdn.jsdelivr.net/npm/@smart-linkify/core/dist/index.js';
+    
+    // Make functions available globally
+    window.linkify = linkify;
+    window.presets = presets;
+    
+    // Example 1: Basic
+    document.getElementById('example1').innerHTML = 
+      linkify("Visit https://example.com for more info");
+    
+    // Example 2: Multiple URLs
+    document.getElementById('example2').innerHTML = 
+      linkify("Check out github.com, www.npmjs.com, and https://typescript.org");
+    
+    // Example 3: Custom styling
+    document.getElementById('example3').innerHTML = 
+      linkify("Documentation at docs.example.com", {
+        color: '#0066cc',
+        className: 'custom-link'
+      });
+    
+    // Example 4: Truncated
+    document.getElementById('example4').innerHTML = 
+      linkify("https://example.com/very/long/path/to/some/resource/file.html", 
+        presets.compact
+      );
+    
+    // Interactive demo
+    function updateOutput() {
+      const input = document.getElementById('inputText').value;
+      const output = document.getElementById('output');
+      output.innerHTML = linkify(input);
+    }
+    
+    window.applyBasic = function() {
+      const input = document.getElementById('inputText').value;
+      const output = document.getElementById('output');
+      output.innerHTML = linkify(input);
+    };
+    
+    window.applyPreset = function(presetName) {
+      const input = document.getElementById('inputText').value;
+      const output = document.getElementById('output');
+      output.innerHTML = linkify(input, presets[presetName]);
+    };
+    
+    // Initialize
+    updateOutput();
+    document.getElementById('inputText').addEventListener('input', updateOutput);
+  </script>
+</body>
+</html>
