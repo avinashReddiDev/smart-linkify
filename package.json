@@ -4,13 +4,14 @@
   "version": "1.0.0",
   "description": "A modern TypeScript library for automatically converting URLs in text to clickable links",
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "examples"
   ],
   "scripts": {
-    "build": "npm run build --workspaces",
+    "build": "npm run build --workspaces --if-present",
     "build:core": "npm run build -w @smart-linkify/core",
     "build:react": "npm run build -w @smart-linkify/react",
-    "clean": "rm -rf packages/*/dist",
+    "clean": "rm -rf packages/*/dist examples/dist",
     "typecheck": "tsc --noEmit",
     "test": "vitest",
     "test:ui": "vitest --ui",
@@ -62,5 +63,22 @@
   "engines": {
     "node": ">=16.0.0",
     "npm": ">=7.0.0"
+  },
+  "catalogs": {
+    "default": {
+      "@smart-linkify/core": "workspace:*",
+      "@smart-linkify/react": "workspace:*",
+      "react": "^18.3.1",
+      "react-dom": "^18.3.1",
+      "@types/react": "^18.3.12",
+      "@types/react-dom": "^18.3.1",
+      "typescript": "^5.9.3",
+      "tsup": "^8.5.1",
+      "vitest": "^2.1.8",
+      "@vitest/ui": "^2.1.9",
+      "@vitest/coverage-v8": "^2.1.8",
+      "@vitejs/plugin-react": "^5.1.2",
+      "vite": "^6.0.5"
+    }
   }
 }
