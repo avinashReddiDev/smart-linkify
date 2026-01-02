@@ -11,7 +11,6 @@ jobs:
 
     permissions:
       contents: read
-      packages: write
       id-token: write
 
     steps:
@@ -22,8 +21,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          registry-url: https://npm.pkg.github.com
+          registry-url: https://registry.npmjs.org
           scope: '@smart-linkify'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Install dependencies
         run: npm ci
@@ -38,10 +39,10 @@ jobs:
         run: npm publish --provenance --access public
         working-directory: packages/core
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.PAT }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish react package
         run: npm publish --provenance --access public
         working-directory: packages/react
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.PAT }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
