@@ -1,0 +1,37 @@
+name: Publish
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    name: Publish packages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Install
+        run: npm ci
+      - name: Build
+        run: npm run -s build --if-present
+      - name: Publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          # publish root package if present
+          if [ -f package.json ]; then
+            npm publish --access public || true
+          fi
+          # publish workspace packages (if using workspaces)
+          if [ -d packages ]; then
+            for pkg in packages/*; do
+              if [ -f "$pkg/package.json" ]; then
+                (cd "$pkg" && npm publish --access public) || true
+              fi
+            done
+          fi
