@@ -3,7 +3,8 @@ import { linkify } from "@smart-linkify/core";
 import type { LinkifyOptions } from "@smart-linkify/core";
 
 interface Props {
-  text: string;
+  text?: string;
+  children?: React.ReactNode;
   options?: LinkifyOptions | undefined;
   onLinkClick?: (url: string, event: React.MouseEvent) => void;
   className?: string;
@@ -31,6 +32,7 @@ interface Props {
  */
 export function SmartLinkify({ 
   text, 
+  children,
   options, 
   onLinkClick,
   className,
@@ -38,8 +40,9 @@ export function SmartLinkify({
 }: Props) {
   // Memoize the linkified HTML
   const linkifiedHtml = useMemo(() => {
-    return linkify(text, options);
-  }, [text, options]);
+    const content = text ?? (typeof children === 'string' ? children : String(children ?? ''));
+    return linkify(content, options);
+  }, [text, children, options]);
 
   // Handle click events
   const handleClick = useCallback((e: React.MouseEvent) => {

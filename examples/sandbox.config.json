@@ -1,0 +1,6 @@
+{
+  "template": "vite-react-ts",
+  "container": {
+    "node": "18"
+  }
+}
