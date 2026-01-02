@@ -41,7 +41,7 @@
     "url": "https://github.com/avinashReddiDev/smart-linkify/issues"
   },
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/",
+    "registry": "https://npm.pkg.github.com",
     "access": "public"
   },
   "homepage": "https://github.com/avinashReddiDev/smart-linkify#readme",
