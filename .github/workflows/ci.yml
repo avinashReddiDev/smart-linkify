@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18]
+        node-version: [18, 20]  # Test on multiple Node versions
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js
@@ -20,10 +20,12 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
       - name: Install
-        run: npm ci
+        run: npm install  # Changed from npm ci
       - name: Build
-        run: npm run -s build --if-present
+        run: npm run build
+      - name: Typecheck
+        run: npm run typecheck
       - name: Lint
-        run: npm run -s lint --if-present
+        run: npm run lint --if-present
       - name: Test
         run: npm test --if-present

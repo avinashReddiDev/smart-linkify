@@ -4,7 +4,7 @@ import type { LinkifyOptions } from "@smart-linkify/core";
 
 interface Props {
   text: string;
-  options?: LinkifyOptions;
+  options?: LinkifyOptions | undefined;
 }
 
 export function SmartLinkify({ text, options }: Props) {

@@ -49,7 +49,7 @@ export function PresetExample() {
 }
 
 // Example 4: Chat-like interface
-export function ChatMessage({ username, message }) {
+export function ChatMessage({ username, message }: { username: string; message: string }) {
   return (
     <div className="chat-message">
       <strong>{username}:</strong>
@@ -62,7 +62,7 @@ export function ChatMessage({ username, message }) {
 }
 
 // Example 5: Comment section
-export function Comment({ author, text, timestamp }) {
+export function Comment({ author, text, timestamp }: { author: string; text: string; timestamp: string }) {
   return (
     <div className="comment">
       <div className="comment-header">
@@ -83,7 +83,7 @@ export function Comment({ author, text, timestamp }) {
 }
 
 // Example 6: User bio with links
-export function UserBio({ bio }) {
+export function UserBio({ bio }: { bio: string }) {
   return (
     <div className="user-bio">
       <SmartLinkify
@@ -95,7 +95,7 @@ export function UserBio({ bio }) {
 }
 
 // Example 7: Truncated URLs for mobile
-export function MobileFriendlyLink({ text }) {
+export function MobileFriendlyLink({ text }: { text: string }) {
   return (
     <SmartLinkify
       text={text}
