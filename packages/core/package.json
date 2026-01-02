@@ -44,7 +44,8 @@
   },
   "homepage": "https://github.com/avinashReddiDev/smart-linkify#readme",
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
   },
   "devDependencies": {
     "tsup": "^8.5.1",
