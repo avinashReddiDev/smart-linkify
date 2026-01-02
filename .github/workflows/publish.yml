@@ -14,18 +14,43 @@ jobs:
       id-token: write
 
     steps:
+      # ---------------------------
+      # Checkout
+      # ---------------------------
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      # ---------------------------
+      # Setup Node & npm auth
+      # ---------------------------
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          registry-url: https://registry.npmjs.org
+          registry-url: https://registry.npmjs.org/
           scope: '@smart-linkify'
+
+      # ---------------------------
+      # DEBUG: npm authentication
+      # ---------------------------
+      - name: Debug npm whoami
+        run: npm whoami
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      - name: Debug npm registry
+        run: |
+          echo "Default registry:"
+          npm config get registry
+          echo ""
+          echo "Full npm config:"
+          npm config list
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # ---------------------------
+      # Install / build / test
+      # ---------------------------
       - name: Install dependencies
         run: npm ci
 
@@ -35,14 +60,42 @@ jobs:
       - name: Run tests
         run: npm test -- --run
 
-      - name: Publish core package
-        run: npm publish --provenance --access public
+      # ---------------------------
+      # DEBUG: package metadata
+      # ---------------------------
+      - name: Debug core package info
         working-directory: packages/core
+        run: |
+          echo "package.json:"
+          cat package.json
+          echo ""
+          echo "npm view:"
+          npm view @smart-linkify/core --json || echo "Package not published yet"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Debug react package info
+        working-directory: packages/react
+        run: |
+          echo "package.json:"
+          cat package.json
+          echo ""
+          echo "npm view:"
+          npm view @smart-linkify/react --json || echo "Package not published yet"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # ---------------------------
+      # Publish (verbose)
+      # ---------------------------
+      - name: Publish core package
+        working-directory: packages/core
+        run: npm publish --provenance --access public --loglevel verbose
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish react package
-        run: npm publish --provenance --access public
         working-directory: packages/react
+        run: npm publish --provenance --access public --loglevel verbose
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
