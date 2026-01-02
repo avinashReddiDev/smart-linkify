@@ -19,8 +19,8 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "npx tsup src/index.ts --format esm,cjs --dts --clean",
-    "dev": "npx tsup src/index.ts --format esm,cjs --dts --watch",
+    "build": "npx tsup src/index.tsx --format esm,cjs --dts --clean",
+    "dev": "npx tsup src/index.tsx --format esm,cjs --dts --watch",
     "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
@@ -50,7 +50,8 @@
   },
   "homepage": "https://github.com/avinashReddiDev/smart-linkify#readme",
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
   },
   "devDependencies": {
     "@types/react": "^18.3.12",
