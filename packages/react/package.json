@@ -42,7 +42,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/avinashReddiDev/smart-linkify.git",
+    "url": "git+https://github.com/avinashReddiDev/smart-linkify.git",
     "directory": "packages/react"
   },
   "bugs": {
@@ -50,7 +50,7 @@
   },
   "homepage": "https://github.com/avinashReddiDev/smart-linkify#readme",
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com",
+    "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
   "devDependencies": {
