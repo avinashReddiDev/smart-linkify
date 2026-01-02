@@ -40,6 +40,10 @@
   "bugs": {
     "url": "https://github.com/avinashReddiDev/smart-linkify/issues"
   },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
+  },
   "homepage": "https://github.com/avinashReddiDev/smart-linkify#readme",
   "devDependencies": {
     "@testing-library/jest-dom": "^6.9.1",
