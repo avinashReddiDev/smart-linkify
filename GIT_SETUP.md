@@ -184,7 +184,7 @@ If you have 2FA enabled (recommended):
 Or set up SSH:
 ```bash
 # Generate SSH key
-ssh-keygen -t ed25519 -C "avinash.reddi@example.com"
+ssh-keygen -t ed25519 -C "reddiavinash59@gmail.com"
 
 # Add to GitHub: https://github.com/settings/keys
 

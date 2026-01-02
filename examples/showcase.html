@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Linkify - Interactive Showcase</title>
+  <meta name="description" content="Transform plain text into interactive links with Smart Linkify. Try it live!">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      text-align: center;
+      color: white;
+      margin-bottom: 60px;
+      animation: fadeIn 1s ease-out;
+    }
+
+    .hero h1 {
+      font-size: 4em;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+      font-weight: 700;
+    }
+
+    .hero p {
+      font-size: 1.5em;
+      opacity: 0.95;
+      margin-bottom: 10px;
+    }
+
+    .hero .subtitle {
+      font-size: 1.1em;
+      opacity: 0.85;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 2.5em;
+      font-weight: 700;
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 0.9em;
+      opacity: 0.9;
+    }
+
+    .comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 60px;
+      animation: slideUp 0.8s ease-out;
+    }
+
+    .before, .after {
+      background: white;
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    }
+
+    .before {
+      border: 3px solid #ffc107;
+    }
+
+    .after {
+      border: 3px solid #28a745;
+    }
+
+    .comparison h3 {
+      margin-bottom: 20px;
+      font-size: 1.5em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .comparison-text {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 12px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.95em;
+      line-height: 1.8;
+      min-height: 150px;
+    }
+
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 30px;
+      margin-bottom: 60px;
+    }
+
+    .demo-card {
+      background: white;
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: fadeIn 1s ease-out;
+    }
+
+    .demo-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 48px rgba(0,0,0,0.15);
+    }
+
+    .demo-card h3 {
+      color: #667eea;
+      margin-bottom: 20px;
+      font-size: 1.5em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .demo-card .icon {
+      font-size: 1.5em;
+    }
+
+    .input-section {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 12px;
+      margin: 15px 0;
+      border-left: 4px solid #667eea;
+    }
+
+    .input-label {
+      font-weight: 600;
+      color: #666;
+      margin-bottom: 8px;
+      font-size: 0.9em;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .input-text {
+      color: #333;
+      font-family: 'Courier New', monospace;
+      font-size: 0.95em;
+      line-height: 1.6;
+    }
+
+    .output-section {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      margin: 15px 0;
+      border-left: 4px solid #28a745;
+      min-height: 60px;
+    }
+
+    .output-label {
+      font-weight: 600;
+      color: #28a745;
+      margin-bottom: 10px;
+      font-size: 0.9em;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .interactive-demo {
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      margin: 60px 0;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    }
+
+    .interactive-demo h2 {
+      color: #333;
+      margin-bottom: 30px;
+      font-size: 2em;
+      text-align: center;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 140px;
+      padding: 20px;
+      border: 2px solid #e9ecef;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 1em;
+      resize: vertical;
+      margin-bottom: 20px;
+      transition: border-color 0.3s ease;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .preset-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 25px;
+      justify-content: center;
+    }
+
+    .preset-button {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.95em;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+    }
+
+    .preset-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5);
+    }
+
+    .preset-button:active {
+      transform: translateY(0);
+    }
+
+    .preset-showcase {
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      margin: 60px 0;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    }
+
+    .preset-showcase h2 {
+      color: #333;
+      margin-bottom: 15px;
+      font-size: 2em;
+      text-align: center;
+    }
+
+    .preset-showcase .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 40px;
+      font-size: 1.1em;
+    }
+
+    .preset-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+
+    .preset-item {
+      padding: 25px;
+      border-radius: 12px;
+      background: #f8f9fa;
+      border: 2px solid #e9ecef;
+      transition: all 0.3s ease;
+    }
+
+    .preset-item:hover {
+      border-color: #667eea;
+      background: #f0f4ff;
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+    }
+
+    .preset-name {
+      font-weight: 700;
+      color: #667eea;
+      margin-bottom: 15px;
+      font-size: 1.2em;
+    }
+
+    .preset-demo {
+      padding: 15px;
+      background: white;
+      border-radius: 8px;
+      min-height: 50px;
+    }
+
+    .feature-list {
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      margin: 60px 0;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    }
+
+    .feature-list h2 {
+      color: #333;
+      margin-bottom: 40px;
+      font-size: 2em;
+      text-align: center;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+    }
+
+    .feature {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+      padding: 20px;
+      border-radius: 12px;
+      background: #f8f9fa;
+      transition: all 0.3s ease;
+    }
+
+    .feature:hover {
+      background: #e9ecef;
+      transform: translateX(5px);
+    }
+
+    .feature-icon {
+      font-size: 2em;
+      flex-shrink: 0;
+    }
+
+    .feature-content h4 {
+      color: #333;
+      margin-bottom: 8px;
+      font-size: 1.1em;
+    }
+
+    .feature-content p {
+      color: #666;
+      font-size: 0.95em;
+    }
+
+    .cta-section {
+      background: white;
+      border-radius: 16px;
+      padding: 50px;
+      margin: 60px 0;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    }
+
+    .cta-section h2 {
+      color: #333;
+      font-size: 2.5em;
+      margin-bottom: 20px;
+    }
+
+    .cta-section p {
+      color: #666;
+      font-size: 1.2em;
+      margin-bottom: 30px;
+    }
+
+    .cta-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 15px 40px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1.1em;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .cta-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .cta-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .cta-secondary {
+      background: white;
+      color: #667eea;
+      border: 2px solid #667eea;
+    }
+
+    .cta-secondary:hover {
+      background: #667eea;
+      color: white;
+      transform: translateY(-3px);
+    }
+
+    .code-example {
+      background: #282c34;
+      color: #abb2bf;
+      padding: 25px;
+      border-radius: 12px;
+      overflow-x: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9em;
+      margin: 20px 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .keyword { color: #c678dd; }
+    .string { color: #98c379; }
+    .function { color: #61afef; }
+    .comment { color: #5c6370; }
+    .number { color: #d19a66; }
+
+    footer {
+      text-align: center;
+      color: white;
+      margin-top: 80px;
+      padding: 40px 20px;
+      font-size: 0.95em;
+      opacity: 0.9;
+    }
+
+    footer a {
+      color: white;
+      text-decoration: underline;
+      margin: 0 10px;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2.5em; }
+      .hero p { font-size: 1.2em; }
+      .comparison { grid-template-columns: 1fr; }
+      .demo-grid { grid-template-columns: 1fr; }
+      .stats { gap: 20px; }
+      .stat-value { font-size: 2em; }
+    }
+
+    /* Loading animation */
+    .loading {
+      text-align: center;
+      padding: 20px;
+      color: #999;
+    }
+
+    .spinner {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #667eea;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Page Loading Overlay */
+    .page-loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
+    }
+
+    .page-loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .page-loader-content {
+      text-align: center;
+      color: white;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    .page-loader-spinner {
+      border: 5px solid rgba(255, 255, 255, 0.3);
+      border-top: 5px solid white;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    .page-loader-text {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .page-loader-subtext {
+      font-size: 16px;
+      opacity: 0.9;
+    }
+
+    /* Loading State for Output */
+    .output-loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      color: #666;
+      font-style: italic;
+      gap: 10px;
+    }
+
+    .loader-small {
+      border: 2px solid #f3f3f3;
+      border-top: 2px solid #667eea;
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      animation: spin 0.8s linear infinite;
+    }
+
+    /* Button Loading State */
+    .preset-btn.loading {
+      position: relative;
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    .preset-btn.loading::after {
+      content: '';
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      top: 50%;
+      left: 50%;
+      margin-left: -7px;
+      margin-top: -7px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top: 2px solid white;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+  </style>
+</head>
+<body>
+  <!-- Page Loading Overlay -->
+  <div class="page-loader" id="pageLoader">
+    <div class="page-loader-content">
+      <div class="page-loader-spinner"></div>
+      <div class="page-loader-text">🔗 Loading Smart Linkify</div>
+      <div class="page-loader-subtext">Preparing interactive showcase...</div>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Hero Section -->
+    <div class="hero">
+      <h1>🔗 Smart Linkify</h1>
+      <p>Transform Plain Text into Interactive Links</p>
+      <p class="subtitle">Automatic detection • Zero dependencies • Fully customizable</p>
+      
+      <div class="stats">
+        <div class="stat">
+          <span class="stat-value">~3KB</span>
+          <span class="stat-label">Minified Size</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">40+</span>
+          <span class="stat-label">Options</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">14</span>
+          <span class="stat-label">Presets</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">0</span>
+          <span class="stat-label">Dependencies</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Before/After Comparison -->
+    <div class="comparison">
+      <div class="before">
+        <h3>❌ Before (Plain Text)</h3>
+        <div class="comparison-text">
+          Visit https://github.com for code.<br>
+          Contact: hello@example.com<br>
+          Call: (555) 123-4567<br>
+          Follow @github #opensource
+        </div>
+      </div>
+      <div class="after">
+        <h3>✅ After (Linkified)</h3>
+        <div class="comparison-text" id="comparison-output">
+          <div class="loading">
+            <div class="spinner"></div>
+            Loading...
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Demo Examples -->
+    <div class="demo-grid">
+      <!-- Example 1: Basic URL -->
+      <div class="demo-card">
+        <h3><span class="icon">🌐</span> Basic URL Detection</h3>
+        <div class="input-section">
+          <div class="input-label">Input</div>
+          <div class="input-text">Visit https://github.com</div>
+        </div>
+        <div class="output-section">
+          <div class="output-label">Output</div>
+          <div id="demo1"><div class="spinner"></div></div>
+        </div>
+      </div>
+
+      <!-- Example 2: Email -->
+      <div class="demo-card">
+        <h3><span class="icon">📧</span> Email Detection</h3>
+        <div class="input-section">
+          <div class="input-label">Input</div>
+          <div class="input-text">Contact: hello@example.com</div>
+        </div>
+        <div class="output-section">
+          <div class="output-label">Output</div>
+          <div id="demo2"><div class="spinner"></div></div>
+        </div>
+      </div>
+
+      <!-- Example 3: Phone -->
+      <div class="demo-card">
+        <h3><span class="icon">📱</span> Phone Detection</h3>
+        <div class="input-section">
+          <div class="input-label">Input</div>
+          <div class="input-text">Call: (555) 123-4567</div>
+        </div>
+        <div class="output-section">
+          <div class="output-label">Output</div>
+          <div id="demo3"><div class="spinner"></div></div>
+        </div>
+      </div>
+
+      <!-- Example 4: Hashtags -->
+      <div class="demo-card">
+        <h3><span class="icon">#️⃣</span> Hashtag Detection</h3>
+        <div class="input-section">
+          <div class="input-label">Input</div>
+          <div class="input-text">Check #javascript #typescript</div>
+        </div>
+        <div class="output-section">
+          <div class="output-label">Output</div>
+          <div id="demo4"><div class="spinner"></div></div>
+        </div>
+      </div>
+
+      <!-- Example 5: Mentions -->
+      <div class="demo-card">
+        <h3><span class="icon">@</span> Mention Detection</h3>
+        <div class="input-section">
+          <div class="input-label">Input</div>
+          <div class="input-text">Follow @github @nodejs</div>
+        </div>
+        <div class="output-section">
+          <div class="output-label">Output</div>
+          <div id="demo5"><div class="spinner"></div></div>
+        </div>
+      </div>
+
+      <!-- Example 6: Custom Styling -->
+      <div class="demo-card">
+        <h3><span class="icon">🎨</span> Custom Styling</h3>
+        <div class="input-section">
+          <div class="input-label">Input</div>
+          <div class="input-text">Docs at docs.example.com</div>
+        </div>
+        <div class="output-section">
+          <div class="output-label">Output</div>
+          <div id="demo6"><div class="spinner"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interactive Playground -->
+    <div class="interactive-demo">
+      <h2>🎮 Try It Yourself!</h2>
+      <p style="text-align: center; color: #666; margin-bottom: 30px;">
+        Type or paste text with URLs, emails, phones, hashtags, or mentions...
+      </p>
+      
+      <textarea id="userInput" placeholder="Enter your text here...">Check out https://github.com/avinashReddiDev/smart-linkify and contact hello@example.com or call 555-1234. Follow @github and explore #opensource!</textarea>
+      
+      <div class="preset-buttons">
+        <button class="preset-button" onclick="applyPreset('default')">Default</button>
+        <button class="preset-button" onclick="applyPreset('minimal')">Minimal</button>
+        <button class="preset-button" onclick="applyPreset('social')">Social</button>
+        <button class="preset-button" onclick="applyPreset('professional')">Professional</button>
+        <button class="preset-button" onclick="applyPreset('secure')">Secure</button>
+        <button class="preset-button" onclick="applyPreset('compact')">Compact</button>
+        <button class="preset-button" onclick="applyPreset('email')">Email</button>
+        <button class="preset-button" onclick="applyPreset('contact')">Contact</button>
+      </div>
+      
+      <div class="output-section" style="min-height: 100px;">
+        <div class="output-label">Live Output</div>
+        <div id="liveOutput"><div class="spinner"></div></div>
+      </div>
+
+      <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+        <strong>💡 Tip:</strong> Try different presets to see how they transform the same text!
+      </div>
+    </div>
+
+    <!-- Preset Showcase -->
+    <div class="preset-showcase">
+      <h2>🎭 Built-in Presets</h2>
+      <p class="subtitle">Ready-to-use style configurations</p>
+      
+      <div class="preset-grid">
+        <div class="preset-item">
+          <div class="preset-name">✨ Default</div>
+          <div class="preset-demo" id="preset-default"><div class="spinner"></div></div>
+        </div>
+        <div class="preset-item">
+          <div class="preset-name">📝 Minimal</div>
+          <div class="preset-demo" id="preset-minimal"><div class="spinner"></div></div>
+        </div>
+        <div class="preset-item">
+          <div class="preset-name">💬 Social</div>
+          <div class="preset-demo" id="preset-social"><div class="spinner"></div></div>
+        </div>
+        <div class="preset-item">
+          <div class="preset-name">💼 Professional</div>
+          <div class="preset-demo" id="preset-professional"><div class="spinner"></div></div>
+        </div>
+        <div class="preset-item">
+          <div class="preset-name">🔒 Secure</div>
+          <div class="preset-demo" id="preset-secure"><div class="spinner"></div></div>
+        </div>
+        <div class="preset-item">
+          <div class="preset-name">📦 Compact</div>
+          <div class="preset-demo" id="preset-compact"><div class="spinner"></div></div>
+        </div>
+        <div class="preset-item">
+          <div class="preset-name">📧 Email</div>
+          <div class="preset-demo" id="preset-email"><div class="spinner"></div></div>
+        </div>
+        <div class="preset-item">
+          <div class="preset-name">📞 Contact</div>
+          <div class="preset-demo" id="preset-contact"><div class="spinner"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features List -->
+    <div class="feature-list">
+      <h2>✨ Key Features</h2>
+      <div class="features">
+        <div class="feature">
+          <div class="feature-icon">🚀</div>
+          <div class="feature-content">
+            <h4>Lightweight</h4>
+            <p>Only ~3KB minified with zero dependencies</p>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">🎯</div>
+          <div class="feature-content">
+            <h4>Smart Detection</h4>
+            <p>Auto-detects URLs, emails, phones, hashtags & mentions</p>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">🎨</div>
+          <div class="feature-content">
+            <h4>Customizable</h4>
+            <p>40+ options for complete control</p>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">⚛️</div>
+          <div class="feature-content">
+            <h4>React Support</h4>
+            <p>Native React components and hooks</p>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">🔒</div>
+          <div class="feature-content">
+            <h4>Security</h4>
+            <p>XSS & ReDoS protection built-in</p>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">📝</div>
+          <div class="feature-content">
+            <h4>TypeScript</h4>
+            <p>Full type definitions included</p>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">⚡</div>
+          <div class="feature-content">
+            <h4>Fast</h4>
+            <p>Optimized for performance</p>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">🌐</div>
+          <div class="feature-content">
+            <h4>Universal</h4>
+            <p>Works everywhere: Browser, Node, React, Vue</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Code Examples -->
+    <div class="preset-showcase">
+      <h2>💻 Quick Start</h2>
+      
+      <h3 style="color: #667eea; margin: 30px 0 15px;">Installation</h3>
+      <div class="code-example">
+<span class="comment"># npm</span>
+npm install @smart-linkify/core
+
+<span class="comment"># yarn</span>
+yarn add @smart-linkify/core
+
+<span class="comment"># pnpm</span>
+pnpm add @smart-linkify/core
+      </div>
+
+      <h3 style="color: #667eea; margin: 30px 0 15px;">JavaScript/TypeScript</h3>
+      <div class="code-example">
+<span class="keyword">import</span> { <span class="function">linkify</span>, presets } <span class="keyword">from</span> <span class="string">'@smart-linkify/core'</span>;
+
+<span class="comment">// Basic usage</span>
+<span class="keyword">const</span> html = <span class="function">linkify</span>(<span class="string">"Visit https://example.com"</span>);
+
+<span class="comment">// With options</span>
+<span class="keyword">const</span> custom = <span class="function">linkify</span>(text, {
+  color: <span class="string">'#0066cc'</span>,
+  detectEmails: <span class="keyword">true</span>,
+  maxLength: <span class="number">30</span>
+});
+
+<span class="comment">// Using presets</span>
+<span class="keyword">const</span> social = <span class="function">linkify</span>(text, presets.social);
+      </div>
+
+      <h3 style="color: #667eea; margin: 30px 0 15px;">React</h3>
+      <div class="code-example">
+<span class="keyword">import</span> { SmartLinkify } <span class="keyword">from</span> <span class="string">'@smart-linkify/react'</span>;
+<span class="keyword">import</span> { presets } <span class="keyword">from</span> <span class="string">'@smart-linkify/core'</span>;
+
+<span class="keyword">function</span> <span class="function">App</span>() {
+  <span class="keyword">return</span> (
+    &lt;<span class="function">SmartLinkify</span> 
+      text=<span class="string">"Check https://example.com"</span>
+      options={presets.social}
+    /&gt;
+  );
+}
+      </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="cta-section">
+      <h2>Ready to Get Started?</h2>
+      <p>Install Smart Linkify and transform your text today!</p>
+      
+      <div class="cta-buttons">
+        <a href="https://www.npmjs.com/package/@smart-linkify/core" class="cta-button cta-primary" target="_blank">
+          📦 View on npm
+        </a>
+        <a href="https://github.com/avinashReddiDev/smart-linkify" class="cta-button cta-secondary" target="_blank">
+          ⭐ Star on GitHub
+        </a>
+        <a href="https://stackblitz.com/github/avinashReddiDev/smart-linkify/tree/main/examples" class="cta-button cta-secondary" target="_blank">
+          🚀 Try on StackBlitz
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>
+      <strong>Smart Linkify</strong> - Transform text into intelligent, interactive links
+    </p>
+    <p>
+      <a href="https://github.com/avinashReddiDev/smart-linkify">GitHub</a> •
+      <a href="https://www.npmjs.com/package/@smart-linkify/core">npm</a> •
+      <a href="https://github.com/avinashReddiDev/smart-linkify/blob/main/README.md">Documentation</a>
+    </p>
+    <p style="margin-top: 20px; opacity: 0.8;">
+      © 2026 Avinash Reddi • MIT License
+    </p>
+  </footer>
+
+  <script type="module">
+    // Show page loader
+    const pageLoader = document.getElementById('pageLoader');
+    console.log('🔄 Loading Smart Linkify...');
+    
+    // Try to load from CDN first, fallback to local if available
+    let linkify, presets;
+    
+    try {
+      // Try loading from CDN
+      console.log('📦 Attempting to load from CDN...');
+      const module = await import('https://cdn.jsdelivr.net/npm/@smart-linkify/core/dist/index.js');
+      linkify = module.linkify;
+      presets = module.presets;
+      console.log('✅ Loaded from CDN successfully');
+    } catch (error) {
+      console.warn('⚠️ CDN load failed, trying local build...', error);
+      try {
+        // Fallback to local build
+        const module = await import('../packages/core/dist/index.js');
+        linkify = module.linkify;
+        presets = module.presets;
+        console.log('✅ Loaded from local build successfully');
+      } catch (localError) {
+        console.error('❌ Failed to load Smart Linkify:', localError);
+        document.body.innerHTML = `
+          <div style="text-align: center; padding: 100px 20px; color: white;">
+            <h1>⚠️ Unable to Load Smart Linkify</h1>
+            <p style="font-size: 1.2em; margin: 20px 0;">Please build the packages first:</p>
+            <pre style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; display: inline-block; text-align: left;">
+cd /Users/avinash.reddi/smart-linkify/smart-linkify
+npm run build
+            </pre>
+            <p style="margin-top: 30px;">
+              <a href="https://github.com/avinashReddiDev/smart-linkify" style="color: white; text-decoration: underline;">View on GitHub</a>
+            </p>
+          </div>
+        `;
+        // Hide page loader on error
+        setTimeout(() => {
+          pageLoader.classList.add('hidden');
+        }, 500);
+      }
+    }
+    
+    // Only continue if library loaded successfully
+    if (!linkify || !presets) {
+      console.error('Library not loaded, stopping initialization');
+      setTimeout(() => {
+        pageLoader.classList.add('hidden');
+      }, 500);
+    } else {
+      // Make available globally for inline handlers
+      window.linkify = linkify;
+      window.presets = presets;
+
+    // Comparison demo
+    const comparisonText = `Visit https://github.com for code.
+Contact: hello@example.com
+Call: (555) 123-4567
+Follow @github #opensource`;
+
+    document.getElementById('comparison-output').innerHTML = linkify(comparisonText, {
+      detectEmails: true,
+      detectPhones: true,
+      detectMentions: true,
+      detectHashtags: true,
+      mentionUrl: (user) => `https://twitter.com/${user}`,
+      hashtagUrl: (tag) => `https://twitter.com/hashtag/${tag}`,
+      color: '#667eea'
+    });
+
+    // Demo 1: Basic
+    console.log('🎨 Rendering demo examples...');
+    setTimeout(() => {
+      document.getElementById('demo1').innerHTML = linkify("Visit https://github.com");
+      console.log('✓ Demo 1 loaded');
+    }, 300);
+
+    // Demo 2: Email
+    setTimeout(() => {
+      document.getElementById('demo2').innerHTML = linkify("Contact: hello@example.com", {
+        detectEmails: true,
+        color: '#e74c3c'
+      });
+      console.log('✓ Demo 2 loaded');
+    }, 450);
+
+    // Demo 3: Phone
+    setTimeout(() => {
+      document.getElementById('demo3').innerHTML = linkify("Call: (555) 123-4567", {
+        detectPhones: true,
+        color: '#3498db'
+      });
+      console.log('✓ Demo 3 loaded');
+    }, 600);
+
+    // Demo 4: Hashtags
+    setTimeout(() => {
+      document.getElementById('demo4').innerHTML = linkify("Check #javascript #typescript", {
+        detectHashtags: true,
+        hashtagUrl: (tag) => `https://twitter.com/hashtag/${tag}`,
+        color: '#1da1f2'
+      });
+      console.log('✓ Demo 4 loaded');
+    }, 750);
+
+    // Demo 5: Mentions
+    setTimeout(() => {
+      document.getElementById('demo5').innerHTML = linkify("Follow @github @nodejs", {
+        detectMentions: true,
+        mentionUrl: (user) => `https://twitter.com/${user}`,
+        color: '#1da1f2'
+      });
+      console.log('✓ Demo 5 loaded');
+    }, 900);
+
+    // Demo 6: Custom
+    setTimeout(() => {
+      document.getElementById('demo6').innerHTML = linkify("Docs at docs.example.com", {
+        color: '#0066cc',
+        iconAfter: ' 📄'
+      });
+      console.log('✓ Demo 6 loaded');
+    }, 1050);
+
+    // Preset examples
+    const presetText = "Visit https://example.com";
+    const presetLongUrl = "https://example.com/very/long/path/to/resource";
+    const presetEmail = "Contact hello@example.com";
+    const presetContact = "Email hello@example.com or call 555-1234";
+
+    console.log('🎭 Rendering preset examples...');
+    setTimeout(() => {
+      document.getElementById('preset-default').innerHTML = linkify(presetText, presets.default);
+      document.getElementById('preset-minimal').innerHTML = linkify(presetText, presets.minimal);
+      console.log('✓ Presets 1-2 loaded');
+    }, 400);
+    
+    setTimeout(() => {
+      document.getElementById('preset-social').innerHTML = linkify(presetText, presets.social);
+      document.getElementById('preset-professional').innerHTML = linkify(presetText, presets.professional);
+      console.log('✓ Presets 3-4 loaded');
+    }, 600);
+    
+    setTimeout(() => {
+      document.getElementById('preset-secure').innerHTML = linkify(presetText, presets.secure);
+      document.getElementById('preset-compact').innerHTML = linkify(presetLongUrl, presets.compact);
+      console.log('✓ Presets 5-6 loaded');
+    }, 800);
+    
+    setTimeout(() => {
+      document.getElementById('preset-email').innerHTML = linkify(presetEmail, presets.email);
+      document.getElementById('preset-contact').innerHTML = linkify(presetContact, presets.contact);
+      console.log('✓ Presets 7-8 loaded');
+    }, 1000);
+
+    // Interactive playground
+    const textarea = document.getElementById('userInput');
+    const output = document.getElementById('liveOutput');
+
+    function updateOutput() {
+      const text = textarea.value;
+      
+      // Show loading state briefly for visual feedback
+      output.innerHTML = '<div class="output-loading"><div class="loader-small"></div><span>Processing...</span></div>';
+      
+      // Process with slight delay to show loader
+      setTimeout(() => {
+        output.innerHTML = linkify(text, {
+          detectEmails: true,
+          detectPhones: true,
+          detectHashtags: true,
+          detectMentions: true,
+          hashtagUrl: (tag) => `https://twitter.com/hashtag/${tag}`,
+          mentionUrl: (user) => `https://twitter.com/${user}`,
+          color: '#667eea'
+        });
+      }, 200);
+    }
+
+    textarea.addEventListener('input', updateOutput);
+    updateOutput();
+
+    window.applyPreset = function(presetName) {
+      const text = textarea.value;
+      const options = presetName === 'default' ? {} : (presets[presetName] || {});
+      
+      // Get the button that was clicked
+      const buttons = document.querySelectorAll('.preset-button');
+      const clickedButton = event.target;
+      
+      // Show loading state on button
+      clickedButton.classList.add('loading');
+      clickedButton.disabled = true;
+      
+      // Disable all buttons temporarily
+      buttons.forEach(btn => btn.disabled = true);
+      
+      // Show loading in output
+      output.innerHTML = '<div class="output-loading"><div class="loader-small"></div><span>Applying preset...</span></div>';
+      
+      setTimeout(() => {
+        // Enhance presets with detection features for demo
+        const enhancedOptions = {
+          ...options,
+          detectEmails: true,
+          detectPhones: true,
+          detectHashtags: true,
+          detectMentions: true,
+          hashtagUrl: (tag) => `https://twitter.com/hashtag/${tag}`,
+          mentionUrl: (user) => `https://twitter.com/${user}`
+        };
+        
+        output.innerHTML = linkify(text, enhancedOptions);
+        
+        // Remove loading state
+        clickedButton.classList.remove('loading');
+        
+        // Re-enable all buttons
+        buttons.forEach(btn => btn.disabled = false);
+      }, 400);
+    };
+
+    console.log('✅ Smart Linkify loaded successfully!');
+    console.log('📦 Try it: linkify("Visit https://example.com")');
+    
+    // Hide page loader after everything is initialized
+    setTimeout(() => {
+      pageLoader.classList.add('hidden');
+      console.log('🎉 Showcase ready!');
+    }, 1000);
+    } // End of else block - library loaded successfully
+  </script>
+</body>
+</html>
