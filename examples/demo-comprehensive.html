@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Linkify - Complete Feature Demo</title>
+  <style>
+    * { box-sizing: border-box; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+    
+    .container {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    
+    h1 {
+      text-align: center;
+      color: #1a1a1a;
+      font-size: 3em;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .subtitle {
+      text-align: center;
+      color: #666;
+      font-size: 1.2em;
+      margin-bottom: 40px;
+    }
+    
+    h2 {
+      color: #333;
+      border-left: 5px solid #667eea;
+      padding-left: 15px;
+      margin: 40px 0 20px;
+      font-size: 2em;
+    }
+    
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 20px;
+      margin: 30px 0;
+    }
+    
+    .card {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 25px;
+      border: 2px solid #e9ecef;
+      transition: all 0.3s ease;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      border-color: #667eea;
+    }
+    
+    .card h3 {
+      color: #667eea;
+      margin-top: 0;
+      margin-bottom: 15px;
+      font-size: 1.3em;
+    }
+    
+    .input-text {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px dashed #dee2e6;
+      font-family: 'Courier New', monospace;
+      color: #495057;
+      margin: 10px 0;
+      font-size: 0.95em;
+    }
+    
+    .output-text {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px solid #28a745;
+      min-height: 50px;
+      margin: 10px 0;
+    }
+    
+    .code-snippet {
+      background: #282c34;
+      color: #abb2bf;
+      padding: 15px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85em;
+      margin: 10px 0;
+    }
+    
+    .interactive-box {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      border-radius: 12px;
+      margin: 30px 0;
+    }
+    
+    .interactive-box h2 {
+      color: white;
+      border-left-color: white;
+    }
+    
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: 15px;
+      border: none;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 1em;
+      resize: vertical;
+      margin: 10px 0;
+    }
+    
+    button {
+      background: white;
+      color: #667eea;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-size: 1em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 5px;
+    }
+    
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    
+    .preset-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 15px 0;
+    }
+    
+    .preset-btn.active {
+      background: #667eea;
+      color: white;
+    }
+    
+    .label {
+      font-weight: 600;
+      color: #495057;
+      margin: 15px 0 8px;
+      display: block;
+      font-size: 0.9em;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .badge {
+      display: inline-block;
+      padding: 5px 12px;
+      background: #667eea;
+      color: white;
+      border-radius: 20px;
+      font-size: 0.8em;
+      margin-left: 10px;
+      font-weight: 600;
+    }
+    
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      margin: 30px 0;
+      padding: 30px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 12px;
+      color: white;
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-number {
+      font-size: 3em;
+      font-weight: bold;
+      display: block;
+    }
+    
+    .stat-label {
+      font-size: 0.9em;
+      opacity: 0.9;
+    }
+    
+    footer {
+      text-align: center;
+      margin-top: 60px;
+      padding-top: 30px;
+      border-top: 2px solid #e9ecef;
+      color: #666;
+    }
+    
+    .emoji {
+      font-size: 1.3em;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔗 Smart Linkify</h1>
+    <p class="subtitle">Transform plain text into intelligent, interactive links with 40+ customization options</p>
+    
+    <div class="stats">
+      <div class="stat-item">
+        <span class="stat-number">40+</span>
+        <span class="stat-label">Options</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">14</span>
+        <span class="stat-label">Presets</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">118</span>
+        <span class="stat-label">Tests</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">0</span>
+        <span class="stat-label">Dependencies</span>
+      </div>
+    </div>
+    
+    <!-- Interactive Demo -->
+    <div class="interactive-box">
+      <h2><span class="emoji">🎮</span>Try It Yourself</h2>
+      <p>Enter any text with URLs, emails, phone numbers, hashtags, or mentions:</p>
+      <textarea id="interactiveInput" placeholder="Try: Visit https://github.com, email hello@example.com, call 555-123-4567, check #javascript, follow @github">Visit https://github.com, email hello@example.com, call 555-123-4567, check #javascript and follow @github</textarea>
+      
+      <span class="label" style="color: white;">Choose a Preset:</span>
+      <div class="preset-buttons">
+        <button class="preset-btn active" data-preset="default">Default</button>
+        <button class="preset-btn" data-preset="minimal">Minimal</button>
+        <button class="preset-btn" data-preset="social">Social</button>
+        <button class="preset-btn" data-preset="professional">Professional</button>
+        <button class="preset-btn" data-preset="secure">Secure</button>
+        <button class="preset-btn" data-preset="email">Email</button>
+        <button class="preset-btn" data-preset="contact">Contact</button>
+        <button class="preset-btn" data-preset="compact">Compact</button>
+      </div>
+      
+      <button onclick="processInteractive()" style="background: #28a745; color: white; font-size: 1.1em; padding: 15px 35px;">✨ Linkify It!</button>
+      
+      <span class="label" style="color: white;">Result:</span>
+      <div id="interactiveOutput" class="output-text"></div>
+    </div>
+    
+    <!-- URL Detection -->
+    <h2><span class="emoji">🌐</span>URL Detection & Styling</h2>
+    <div class="feature-grid">
+      <div class="card">
+        <h3>Basic URL Linkification</h3>
+        <div class="input-text">Visit https://github.com and www.google.com</div>
+        <div class="output-text" id="url-basic"></div>
+        <div class="code-snippet">linkify(text)</div>
+      </div>
+      
+      <div class="card">
+        <h3>Custom Colors & Styles</h3>
+        <div class="input-text">Check out example.com</div>
+        <div class="output-text" id="url-custom"></div>
+        <div class="code-snippet">linkify(text, {
+  color: '#ff6b6b',
+  underline: true
+})</div>
+      </div>
+      
+      <div class="card">
+        <h3>URL Truncation</h3>
+        <div class="input-text">https://example.com/very/long/path/to/file.zip</div>
+        <div class="output-text" id="url-truncate"></div>
+        <div class="code-snippet">linkify(text, {
+  maxLength: 30,
+  truncateStrategy: 'middle'
+})</div>
+      </div>
+    </div>
+    
+    <!-- Contact Detection -->
+    <h2><span class="emoji">📧</span>Contact Information Detection</h2>
+    <div class="feature-grid">
+      <div class="card">
+        <h3>Email Detection</h3>
+        <div class="input-text">Contact hello@example.com or support@company.org</div>
+        <div class="output-text" id="email-detect"></div>
+        <div class="code-snippet">linkify(text, {
+  detectEmails: true
+})</div>
+      </div>
+      
+      <div class="card">
+        <h3>Phone Number Detection</h3>
+        <div class="input-text">Call (555) 123-4567 or +1-555-987-6543</div>
+        <div class="output-text" id="phone-detect"></div>
+        <div class="code-snippet">linkify(text, {
+  detectPhones: true
+})</div>
+      </div>
+      
+      <div class="card">
+        <h3>Combined Contact Info</h3>
+        <div class="input-text">Visit example.com, email info@example.com, call 555-123-4567</div>
+        <div class="output-text" id="contact-combined"></div>
+        <div class="code-snippet">linkify(text, {
+  detectEmails: true,
+  detectPhones: true
+})</div>
+      </div>
+    </div>
+    
+    <!-- Social Media -->
+    <h2><span class="emoji">💬</span>Social Media Features</h2>
+    <div class="feature-grid">
+      <div class="card">
+        <h3>Hashtag Detection</h3>
+        <div class="input-text">Loving #javascript #typescript #react #webdev</div>
+        <div class="output-text" id="hashtag-detect"></div>
+        <div class="code-snippet">linkify(text, {
+  detectHashtags: true,
+  hashtagUrl: tag => 
+    `https://twitter.com/hashtag/${tag}`
+})</div>
+      </div>
+      
+      <div class="card">
+        <h3>Mention Detection</h3>
+        <div class="input-text">Follow @github @npmjs @nodejs</div>
+        <div class="output-text" id="mention-detect"></div>
+        <div class="code-snippet">linkify(text, {
+  detectMentions: true,
+  mentionUrl: user => 
+    `https://twitter.com/${user}`
+})</div>
+      </div>
+      
+      <div class="card">
+        <h3>Complete Social Post</h3>
+        <div class="input-text">Just released v2.0! 🚀 github.com/user/repo #opensource #javascript @developer</div>
+        <div class="output-text" id="social-full"></div>
+        <div class="code-snippet">linkify(text, presets.social)</div>
+      </div>
+    </div>
+    
+    <!-- Security -->
+    <h2><span class="emoji">🔒</span>Security Features</h2>
+    <div class="feature-grid">
+      <div class="card">
+        <h3>Remove Tracking Parameters</h3>
+        <div class="input-text">https://example.com?utm_source=twitter&fbclid=abc</div>
+        <div class="output-text" id="security-tracking"></div>
+        <div class="code-snippet">linkify(text, {
+  removeTracking: true
+})</div>
+      </div>
+      
+      <div class="card">
+        <h3>Domain Blocklist</h3>
+        <div class="input-text">Visit example.com and spam-site.com</div>
+        <div class="output-text" id="security-blocklist"></div>
+        <div class="code-snippet">linkify(text, {
+  blocklist: ['spam-site.com']
+})</div>
+      </div>
+      
+      <div class="card">
+        <h3>Domain Allowlist</h3>
+        <div class="input-text">Check github.com, google.com, random.com</div>
+        <div class="output-text" id="security-allowlist"></div>
+        <div class="code-snippet">linkify(text, {
+  allowlist: ['github.com', 'google.com']
+})</div>
+      </div>
+    </div>
+    
+    <!-- Advanced Styling -->
+    <h2><span class="emoji">🎨</span>Advanced Styling Options</h2>
+    <div class="feature-grid">
+      <div class="card">
+        <h3>Domain-Specific Icons & Colors</h3>
+        <div class="input-text">Visit github.com, npmjs.com, stackoverflow.com</div>
+        <div class="output-text" id="style-domain"></div>
+        <div class="code-snippet">linkify(text, {
+  domainStyles: {
+    'github.com': { 
+      icon: '🐙 ', color: '#333' 
+    },
+    'npmjs.com': { 
+      icon: '📦 ', color: '#cb3837' 
+    }
+  }
+})</div>
+      </div>
+      
+      <div class="card">
+        <h3>Custom Icons</h3>
+        <div class="input-text">Visit https://example.com for details</div>
+        <div class="output-text" id="style-icons"></div>
+        <div class="code-snippet">linkify(text, {
+  iconBefore: '🔗 ',
+  iconAfter: ' →'
+})</div>
+      </div>
+      
+      <div class="card">
+        <h3>Accessibility (ARIA Labels)</h3>
+        <div class="input-text">Read docs at https://docs.example.com</div>
+        <div class="output-text" id="style-aria"></div>
+        <div class="code-snippet">linkify(text, {
+  ariaLabel: 'External documentation',
+  screenReaderText: 'Opens in new tab'
+})</div>
+      </div>
+    </div>
+    
+    <!-- Real World Examples -->
+    <h2><span class="emoji">🌍</span>Real-World Examples</h2>
+    <div class="feature-grid">
+      <div class="card">
+        <h3>Blog Comment</h3>
+        <div class="input-text">Great post! See my article at myblog.com/post. #webdev #coding @author</div>
+        <div class="output-text" id="real-blog"></div>
+      </div>
+      
+      <div class="card">
+        <h3>Support Ticket</h3>
+        <div class="input-text">Issue with api.example.com/v1. Email support@example.com or call (555) 123-4567</div>
+        <div class="output-text" id="real-support"></div>
+      </div>
+      
+      <div class="card">
+        <h3>Marketing Email</h3>
+        <div class="input-text">Visit store.example.com for 50% off! Use code SAVE50. Questions? Email hello@example.com</div>
+        <div class="output-text" id="real-marketing"></div>
+      </div>
+    </div>
+    
+    <footer>
+      <p><strong>Smart Linkify</strong> - The most comprehensive text-to-link transformation library</p>
+      <p>
+        <a href="https://github.com/avinashReddiDev/smart-linkify" target="_blank">GitHub</a> •
+        <a href="https://www.npmjs.com/package/@smart-linkify/core" target="_blank">npm</a> •
+        <a href="../README.md">Documentation</a>
+      </p>
+      <p style="color: #999; font-size: 0.9em;">© 2026 Smart Linkify. MIT License.</p>
+    </footer>
+  </div>
+
+  <script type="module">
+    // For production, use: import { linkify, presets } from '@smart-linkify/core';
+    // For local development:
+    import { linkify, presets } from '../packages/core/dist/index.js';
+
+    // URL Detection
+    document.getElementById('url-basic').innerHTML = linkify(
+      'Visit https://github.com and www.google.com'
+    );
+
+    document.getElementById('url-custom').innerHTML = linkify(
+      'Check out example.com',
+      { color: '#ff6b6b', underline: true }
+    );
+
+    document.getElementById('url-truncate').innerHTML = linkify(
+      'https://example.com/very/long/path/to/file.zip',
+      { maxLength: 30, truncateStrategy: 'middle' }
+    );
+
+    // Contact Detection
+    document.getElementById('email-detect').innerHTML = linkify(
+      'Contact hello@example.com or support@company.org',
+      { detectEmails: true }
+    );
+
+    document.getElementById('phone-detect').innerHTML = linkify(
+      'Call (555) 123-4567 or +1-555-987-6543',
+      { detectPhones: true }
+    );
+
+    document.getElementById('contact-combined').innerHTML = linkify(
+      'Visit example.com, email info@example.com, call 555-123-4567',
+      { detectEmails: true, detectPhones: true }
+    );
+
+    // Social Media
+    document.getElementById('hashtag-detect').innerHTML = linkify(
+      'Loving #javascript #typescript #react #webdev',
+      {
+        detectHashtags: true,
+        hashtagUrl: tag => `https://twitter.com/hashtag/${tag}`
+      }
+    );
+
+    document.getElementById('mention-detect').innerHTML = linkify(
+      'Follow @github @npmjs @nodejs',
+      {
+        detectMentions: true,
+        mentionUrl: user => `https://twitter.com/${user}`
+      }
+    );
+
+    document.getElementById('social-full').innerHTML = linkify(
+      'Just released v2.0! 🚀 github.com/user/repo #opensource #javascript @developer',
+      presets.social
+    );
+
+    // Security
+    document.getElementById('security-tracking').innerHTML = linkify(
+      'https://example.com?utm_source=twitter&fbclid=abc',
+      { removeTracking: true }
+    );
+
+    document.getElementById('security-blocklist').innerHTML = linkify(
+      'Visit example.com and spam-site.com',
+      { blocklist: ['spam-site.com'] }
+    );
+
+    document.getElementById('security-allowlist').innerHTML = linkify(
+      'Check github.com, google.com, random.com',
+      { allowlist: ['github.com', 'google.com'] }
+    );
+
+    // Advanced Styling
+    document.getElementById('style-domain').innerHTML = linkify(
+      'Visit github.com, npmjs.com, stackoverflow.com',
+      {
+        domainStyles: {
+          'github.com': { icon: '🐙 ', color: '#333' },
+          'npmjs.com': { icon: '📦 ', color: '#cb3837' },
+          'stackoverflow.com': { icon: '📚 ', color: '#f48024' }
+        }
+      }
+    );
+
+    document.getElementById('style-icons').innerHTML = linkify(
+      'Visit https://example.com for details',
+      { iconBefore: '🔗 ', iconAfter: ' →' }
+    );
+
+    document.getElementById('style-aria').innerHTML = linkify(
+      'Read docs at https://docs.example.com',
+      {
+        ariaLabel: 'External documentation',
+        screenReaderText: 'Opens in new tab'
+      }
+    );
+
+    // Real World
+    document.getElementById('real-blog').innerHTML = linkify(
+      'Great post! See my article at myblog.com/post. #webdev #coding @author',
+      {
+        detectHashtags: true,
+        detectMentions: true,
+        hashtagUrl: tag => `https://twitter.com/hashtag/${tag}`,
+        mentionUrl: user => `https://twitter.com/${user}`
+      }
+    );
+
+    document.getElementById('real-support').innerHTML = linkify(
+      'Issue with api.example.com/v1. Email support@example.com or call (555) 123-4567',
+      { detectEmails: true, detectPhones: true }
+    );
+
+    document.getElementById('real-marketing').innerHTML = linkify(
+      'Visit store.example.com for 50% off! Use code SAVE50. Questions? Email hello@example.com',
+      { detectEmails: true }
+    );
+
+    // Interactive Demo
+    let currentPreset = 'default';
+
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        currentPreset = this.dataset.preset;
+      });
+    });
+
+    window.processInteractive = function() {
+      const input = document.getElementById('interactiveInput').value;
+      const output = document.getElementById('interactiveOutput');
+
+      if (!input.trim()) {
+        output.innerHTML = '<em style="color: #999;">Please enter some text...</em>';
+        return;
+      }
+
+      let options = {};
+
+      if (currentPreset !== 'default' && presets[currentPreset]) {
+        options = presets[currentPreset];
+      } else {
+        options = {
+          detectEmails: true,
+          detectPhones: true,
+          detectHashtags: true,
+          detectMentions: true,
+          hashtagUrl: tag => `https://twitter.com/hashtag/${tag}`,
+          mentionUrl: user => `https://twitter.com/${user}`
+        };
+      }
+
+      try {
+        output.innerHTML = linkify(input, options);
+      } catch (error) {
+        output.innerHTML = `<span style="color: #dc3545;">Error: ${error.message}</span>`;
+      }
+    };
+
+    // Auto-run on load
+    processInteractive();
+  </script>
+</body>
+</html>

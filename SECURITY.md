@@ -47,7 +47,69 @@ Smart Linkify implements several security measures:
 - **HTML Escaping**: All user input is properly escaped to prevent XSS attacks
 - **Safe Link Attributes**: Links opened in new tabs include `rel="noopener noreferrer"`
 - **Input Validation**: Type checking and validation of all inputs
+- **ReDoS Protection**: Input length limits and optimized regex patterns to prevent Regular Expression Denial of Service attacks
 - **No Dependencies**: Core package has zero dependencies to minimize supply chain risks
+- **TypeScript**: Strong typing helps prevent common errors at compile time
+
+### ReDoS (Regular Expression Denial of Service) Protection
+
+The library protects against ReDoS attacks through multiple layers:
+
+#### 1. Input Length Validation
+- **Default limit**: 50,000 characters
+- **Configurable**: Set custom limits via `maxInputLength` option
+- **Early validation**: Input is checked before any regex processing
+
+```typescript
+// This will throw an error to prevent DoS
+linkify('a'.repeat(100000)); 
+// Error: Input text exceeds maximum length of 50000 characters
+
+// Configure custom limit for specific use cases
+linkify(largeText, { maxInputLength: 100000 });
+```
+
+#### 2. Optimized Regex Patterns
+All regular expressions are carefully crafted to avoid catastrophic backtracking:
+- **URL detection**: Uses non-capturing groups and bounded repetition
+- **Email detection**: Limited character classes with specific domain patterns
+- **Phone detection**: Fixed-length patterns with optional formatting
+- **Hashtag/Mention**: Length-limited (30 and 15 chars respectively)
+
+#### 3. Linear Time Complexity
+Our regex patterns are designed to have O(n) time complexity, where n is the input length. This ensures predictable performance even with malicious input.
+
+### Best Practices for Users
+
+When using Smart Linkify in production:
+
+1. **Set appropriate limits** based on your use case:
+   ```typescript
+   // For user comments (typically short)
+   linkify(comment, { maxInputLength: 5000 });
+   
+   // For blog posts (longer content)
+   linkify(post, { maxInputLength: 50000 });
+   ```
+
+2. **Validate user input** before processing:
+   ```typescript
+   const safeText = sanitizeUserInput(userInput);
+   const html = linkify(safeText, {
+     maxInputLength: 10000,
+     removeTracking: true,
+     blocklist: ['malicious.com']
+   });
+   ```
+
+3. **Use security presets** for external content:
+   ```typescript
+   import { linkify, presets } from '@smart-linkify/core';
+   
+   linkify(externalContent, presets.safe);
+   ```
+
+4. **Monitor performance** in production and adjust limits if needed
 - **TypeScript**: Strong typing helps prevent common errors
 
 ## Security Updates
@@ -69,4 +131,4 @@ We appreciate the security research community and will acknowledge security rese
 
 ## Questions?
 
-If you have questions about this security policy, please contact us at [your.email@example.com].
+If you have questions about this security policy, please contact us at reddiavinash59@gmail.com.
