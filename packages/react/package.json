@@ -1,5 +1,5 @@
 {
-  "name": "@smart-linkify/react",
+  "name": "smart-linkify-react",
   "version": "1.0.0",
   "description": "React components for smart URL linkification",
   "type": "module",
@@ -27,7 +27,7 @@
     "react": ">=17"
   },
   "dependencies": {
-    "@smart-linkify/core": "*"
+    "smart-linkify-core": "*"
   },
   "keywords": [
     "react",

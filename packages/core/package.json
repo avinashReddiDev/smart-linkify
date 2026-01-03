@@ -1,5 +1,5 @@
 {
-  "name": "@smart-linkify/core",
+  "name": "smart-linkify-core",
   "version": "1.0.0",
   "description": "Core library for converting URLs in text to clickable links",
   "main": "dist/index.cjs",
